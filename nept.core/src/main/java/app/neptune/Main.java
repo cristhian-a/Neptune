@@ -1,8 +1,11 @@
 package app.neptune;
 
+import app.neptune.dto.Point;
+
 final class Main {
 
     static void main() {
-        IO.println("Hello world!");
+        var point = new Point(1f, 2f);
+        IO.println(point.getX());
     }
 }

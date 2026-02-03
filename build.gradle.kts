@@ -2,19 +2,16 @@ plugins {
     id("java")
 }
 
-group = "app.neptune"
-version = "1.0-SNAPSHOT"
+subprojects {
+    apply(plugin = "java")
 
-repositories {
-    mavenCentral()
-}
+    java {
+        toolchain {
+            languageVersion.set(JavaLanguageVersion.of(25))
+        }
+    }
 
-dependencies {
-    testImplementation(platform("org.junit:junit-bom:5.10.0"))
-    testImplementation("org.junit.jupiter:junit-jupiter")
-    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
-}
-
-tasks.test {
-    useJUnitPlatform()
+    repositories {
+        mavenCentral()
+    }
 }

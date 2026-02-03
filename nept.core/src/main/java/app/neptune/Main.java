@@ -8,8 +8,14 @@ final class Main {
 
     static void main() {
         System.load("C:\\Users\\User\\IdeaProjects\\neptune\\native\\build\\nept.dll");
+        System.load("C:\\Users\\User\\IdeaProjects\\neptune\\native\\build\\nept_vec.dll");
         IO.println("Finished loading!");
 
+        example1();
+        NeptVec.call();
+    }
+
+    static void example1() {
         IO.println("\nadd");
         int result = NeptNative.add(9, 4);
         IO.println(result);
@@ -33,5 +39,7 @@ final class Main {
         } catch (Throwable e) {
             throw new RuntimeException(e);
         }
+
+        IO.println();
     }
 }

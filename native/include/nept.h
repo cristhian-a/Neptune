@@ -23,7 +23,16 @@
   #define NEPT_API
 #endif
 
+// Opaque type
+typedef struct NeptContext NeptContext;
+
+// Lyfecycle
+NEPT_API NeptContext* nept_create(void);
+NEPT_API void nept_destroy(NeptContext* ctx);
+
+// Operations
 NEPT_API int add(int a, int b);
 NEPT_API void increment_all(int* data, int length);
+NEPT_API void nept_increment_all(NeptContext* ctx, int* data, int length);
 
 #endif

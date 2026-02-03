@@ -1,11 +1,12 @@
 package app.neptune;
 
-import app.neptune.dto.Point;
-
 final class Main {
 
     static void main() {
-        var point = new Point(1f, 2f);
-        IO.println(point.getX());
+        System.load("C:\\Users\\User\\IdeaProjects\\neptune\\native\\build\\nept.dll");
+        IO.println("Finished loading!");
+
+        int result = NeptuneNative.add(9, 4);
+        IO.println(result);
     }
 }

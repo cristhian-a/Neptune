@@ -21,3 +21,12 @@ Vec3 vec3_add(Vec3 a, Vec3 b) {
     r.z = a.z + b.z;
     return r;
 }
+
+void vec3_add_all(const Vec3* a, const Vec3* b, Vec3* out, int count) {
+    for (int i = 0; i < count; i++) {
+        out[i].x = a[i].x + b[i].x;
+        out[i].y = a[i].y + b[i].y;
+        out[i].z = a[i].z + b[i].z;
+    }
+    
+}

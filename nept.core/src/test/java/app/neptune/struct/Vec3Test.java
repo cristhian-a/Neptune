@@ -1,5 +1,6 @@
 package app.neptune.struct;
 
+import app.neptune.NeptVec;
 import app.neptune.dto.Vec3;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -100,6 +101,46 @@ public final class Vec3Test {
             assert nx == vecR.x();
             assert ny == vecR.y();
             assert nz == vecR.z();
+
+        } catch (Throwable e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Test
+    void addAllTest() {
+        try (Arena arena = Arena.ofConfined()) {
+            int count = 3;
+
+            MemorySegment segA = arena.allocate(Vec3Layouts.VEC3, 3);
+            MemorySegment segB = arena.allocate(Vec3Layouts.VEC3, 3);
+            MemorySegment segR = arena.allocate(Vec3Layouts.VEC3, 3);
+
+            long stride = Vec3Layouts.VEC3.byteSize();
+            for (long offset = 0L; offset < count; offset++) {
+                Vec3Layouts.X.set(segA, offset * stride, 1f);
+                Vec3Layouts.Y.set(segA, offset * stride, 2f);
+                Vec3Layouts.Z.set(segA, offset * stride, 3f);
+
+                Vec3Layouts.X.set(segB, offset * stride, 10f);
+                Vec3Layouts.Y.set(segB, offset * stride, 20f);
+                Vec3Layouts.Z.set(segB, offset * stride, 30f);
+            }
+
+            Vec3Layouts.VEC3_ADD_ALL.invokeExact(segA, segB, segR, count);
+
+            for (long offset = 0L; offset < count; offset++) {
+                float x = (float) Vec3Layouts.X.get(segR, offset * stride);
+                float y = (float) Vec3Layouts.Y.get(segR, offset * stride);
+                float z = (float) Vec3Layouts.Z.get(segR, offset * stride);
+
+                IO.println("vector " + (offset + 1));
+                IO.println(x + ", " + y + ", " + z);
+
+                assert x == 11f;
+                assert y == 22f;
+                assert z == 33f;
+            }
 
         } catch (Throwable e) {
             throw new RuntimeException(e);

@@ -13,4 +13,11 @@ void vec3_normalize(Vec3* v);
 
 Vec3 vec3_add(Vec3 a, Vec3 b);
 
+void vec3_add_all(
+    const Vec3* a,
+    const Vec3* b,
+    Vec3* out,
+    int count
+);
+
 #endif

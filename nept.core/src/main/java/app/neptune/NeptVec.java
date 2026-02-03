@@ -1,10 +1,12 @@
 package app.neptune;
 
+import app.neptune.dto.Vec3;
 import app.neptune.struct.Vec3Layouts;
 
 import java.lang.foreign.Arena;
 import java.lang.foreign.MemorySegment;
 import java.lang.foreign.SegmentAllocator;
+import java.util.List;
 
 public final class NeptVec {
 
@@ -45,5 +47,36 @@ public final class NeptVec {
         }
 
         IO.println();
+    }
+
+    public static void addAll(List<Vec3> a, List<Vec3> b) {
+        if (a.size() != b.size()) return;
+        if (a.isEmpty()) return;
+
+        try (Arena arena = Arena.ofConfined()) {
+            int count = a.size();
+
+            MemorySegment segA = arena.allocate(Vec3Layouts.VEC3, count);
+            MemorySegment segB = arena.allocate(Vec3Layouts.VEC3, count);
+            MemorySegment segR = arena.allocate(Vec3Layouts.VEC3, count);
+
+            long stride = Vec3Layouts.VEC3.byteSize();
+            for (int offset = 0; offset < count; offset++) {
+                Vec3 va = a.get(offset);
+                Vec3 vb = b.get(offset);
+
+                Vec3Layouts.X.set(segA, stride * offset, va.x());
+                Vec3Layouts.Y.set(segA, stride * offset, va.y());
+                Vec3Layouts.Z.set(segA, stride * offset, va.z());
+
+                Vec3Layouts.X.set(segB, stride * offset, vb.x());
+                Vec3Layouts.Y.set(segB, stride * offset, vb.y());
+                Vec3Layouts.Z.set(segB, stride * offset, vb.z());
+            }
+
+            Vec3Layouts.VEC3_ADD_ALL.invokeExact(segA, segB, segR, count);
+        } catch (Throwable e) {
+            throw new RuntimeException(e);
+        }
     }
 }

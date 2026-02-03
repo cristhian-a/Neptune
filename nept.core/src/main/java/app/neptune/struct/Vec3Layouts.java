@@ -33,6 +33,12 @@ public final class Vec3Layouts {
             Vec3Layouts.VEC3,
             Vec3Layouts.VEC3
     );
+    private static final FunctionDescriptor VEC3_ADD_ALL_DESC = FunctionDescriptor.ofVoid(
+            ADDRESS,
+            ADDRESS,
+            ADDRESS,
+            JAVA_INT
+    );
 
     static final Linker LINKER = Linker.nativeLinker();
     static final SymbolLookup LOOKUP = SymbolLookup.loaderLookup();
@@ -40,6 +46,7 @@ public final class Vec3Layouts {
     public static final MethodHandle VEC3_LENGTH;
     public static final MethodHandle VEC3_NORMALIZE;
     public static final MethodHandle VEC3_ADD;
+    public static final MethodHandle VEC3_ADD_ALL;
 
     static {
         try {
@@ -54,6 +61,10 @@ public final class Vec3Layouts {
             VEC3_ADD = LINKER.downcallHandle(
                     LOOKUP.find("vec3_add").orElseThrow(),
                     VEC3_ADD_DESC
+            );
+            VEC3_ADD_ALL = LINKER.downcallHandle(
+                    LOOKUP.find("vec3_add_all").orElseThrow(),
+                    VEC3_ADD_ALL_DESC
             );
         } catch (Throwable t) {
             throw new RuntimeException(t);

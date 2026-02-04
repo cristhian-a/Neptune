@@ -28,5 +28,12 @@ void vec3_add_all(const Vec3* a, const Vec3* b, Vec3* out, int count) {
         out[i].y = a[i].y + b[i].y;
         out[i].z = a[i].z + b[i].z;
     }
-    
+}
+
+void vec3_add_inplace(Vec3* a, const Vec3* b, int count) {
+    for(int i = 0; i < count; i++) {
+        a[i].x += b[i].x;
+        a[i].y += b[i].y;
+        a[i].z += b[i].z;
+    }
 }

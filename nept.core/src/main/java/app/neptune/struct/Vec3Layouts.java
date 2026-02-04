@@ -17,9 +17,9 @@ public final class Vec3Layouts {
             JAVA_FLOAT.withName("z")
     ).withName("vec3");
 
-    public static final VarHandle X = VEC3.varHandle(MemoryLayout.PathElement.groupElement("x"));
-    public static final VarHandle Y = VEC3.varHandle(MemoryLayout.PathElement.groupElement("y"));
-    public static final VarHandle Z = VEC3.varHandle(MemoryLayout.PathElement.groupElement("z"));
+    public static final VarHandle X = VEC3.varHandle(MemoryLayout.PathElement.groupElement("x")).withInvokeExactBehavior();
+    public static final VarHandle Y = VEC3.varHandle(MemoryLayout.PathElement.groupElement("y")).withInvokeExactBehavior();
+    public static final VarHandle Z = VEC3.varHandle(MemoryLayout.PathElement.groupElement("z")).withInvokeExactBehavior();
 
     private static final FunctionDescriptor VEC3_LENGTH_DESC = FunctionDescriptor.of(
             JAVA_FLOAT,
@@ -39,6 +39,11 @@ public final class Vec3Layouts {
             ADDRESS,
             JAVA_INT
     );
+    private static final FunctionDescriptor VEC3_ADD_INPLACE_DESC = FunctionDescriptor.ofVoid(
+            ADDRESS,
+            ADDRESS,
+            JAVA_INT
+    );
 
     static final Linker LINKER = Linker.nativeLinker();
     static final SymbolLookup LOOKUP = SymbolLookup.loaderLookup();
@@ -47,6 +52,7 @@ public final class Vec3Layouts {
     public static final MethodHandle VEC3_NORMALIZE;
     public static final MethodHandle VEC3_ADD;
     public static final MethodHandle VEC3_ADD_ALL;
+    public static final MethodHandle VEC3_ADD_INPLACE;
 
     static {
         try {
@@ -65,6 +71,10 @@ public final class Vec3Layouts {
             VEC3_ADD_ALL = LINKER.downcallHandle(
                     LOOKUP.find("vec3_add_all").orElseThrow(),
                     VEC3_ADD_ALL_DESC
+            );
+            VEC3_ADD_INPLACE = LINKER.downcallHandle(
+                    LOOKUP.find("vec3_add_inplace").orElseThrow(),
+                    VEC3_ADD_INPLACE_DESC
             );
         } catch (Throwable t) {
             throw new RuntimeException(t);

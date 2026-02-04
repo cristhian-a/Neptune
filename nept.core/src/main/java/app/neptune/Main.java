@@ -15,8 +15,8 @@ final class Main {
         IO.println("Finished loading!");
 
 //        example1();
-//        NeptVec.call();
-        addAllExample();
+        NeptVec.call();
+//        addAllExample();
     }
 
     static void addAllExample() {

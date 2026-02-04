@@ -1,6 +1,5 @@
 package app.neptune.struct;
 
-import app.neptune.NeptVec;
 import app.neptune.dto.Vec3;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -27,9 +26,9 @@ public final class Vec3Test {
         try (Arena arena = Arena.ofConfined()) {
             MemorySegment vec = arena.allocate(Vec3Layouts.VEC3);
 
-            Vec3Layouts.X.set(vec, 0, 3f);
-            Vec3Layouts.Y.set(vec, 0, 4f);
-            Vec3Layouts.Z.set(vec, 0, 0f);
+            Vec3Layouts.X.set(vec, 0L, 3f);
+            Vec3Layouts.Y.set(vec, 0L, 4f);
+            Vec3Layouts.Z.set(vec, 0L, 0f);
 
             float len = (float) Vec3Layouts.VEC3_LENGTH.invokeExact(vec);
             IO.println(len);
@@ -55,14 +54,14 @@ public final class Vec3Test {
         try (Arena arena = Arena.ofConfined()) {
             MemorySegment vec = arena.allocate(Vec3Layouts.VEC3);
 
-            Vec3Layouts.X.set(vec, 0, 3f);
-            Vec3Layouts.Y.set(vec, 0, 4f);
-            Vec3Layouts.Z.set(vec, 0, 0f);
+            Vec3Layouts.X.set(vec, 0L, 3f);
+            Vec3Layouts.Y.set(vec, 0L, 4f);
+            Vec3Layouts.Z.set(vec, 0L, 0f);
 
             Vec3Layouts.VEC3_NORMALIZE.invokeExact(vec);
-            float nx = (float) Vec3Layouts.X.get(vec, 0);
-            float ny = (float) Vec3Layouts.Y.get(vec, 0);
-            float nz = (float) Vec3Layouts.Z.get(vec, 0);
+            float nx = (float) Vec3Layouts.X.get(vec, 0L);
+            float ny = (float) Vec3Layouts.Y.get(vec, 0L);
+            float nz = (float) Vec3Layouts.Z.get(vec, 0L);
             IO.println(nx + ", " + ny + ", " + nz);
 
             assert nx == expectedX;
@@ -82,20 +81,20 @@ public final class Vec3Test {
 
         try (Arena arena = Arena.ofConfined()) {
             MemorySegment vec = arena.allocate(Vec3Layouts.VEC3);
-            Vec3Layouts.X.set(vec, 0, 3f);
-            Vec3Layouts.Y.set(vec, 0, 4f);
-            Vec3Layouts.Z.set(vec, 0, 0f);
+            Vec3Layouts.X.set(vec, 0L, 3f);
+            Vec3Layouts.Y.set(vec, 0L, 4f);
+            Vec3Layouts.Z.set(vec, 0L, 0f);
 
             MemorySegment vec2 = arena.allocate(Vec3Layouts.VEC3);
-            Vec3Layouts.X.set(vec2, 0, 2f);
-            Vec3Layouts.Y.set(vec2, 0, 3f);
-            Vec3Layouts.Z.set(vec2, 0, 1f);
+            Vec3Layouts.X.set(vec2, 0L, 2f);
+            Vec3Layouts.Y.set(vec2, 0L, 3f);
+            Vec3Layouts.Z.set(vec2, 0L, 1f);
 
             var vecOut = (MemorySegment) Vec3Layouts.VEC3_ADD
                     .invokeExact((SegmentAllocator) arena, vec, vec2);
-            float nx = (float) Vec3Layouts.X.get(vecOut, 0);
-            float ny = (float) Vec3Layouts.Y.get(vecOut, 0);
-            float nz = (float) Vec3Layouts.Z.get(vecOut, 0);
+            float nx = (float) Vec3Layouts.X.get(vecOut, 0L);
+            float ny = (float) Vec3Layouts.Y.get(vecOut, 0L);
+            float nz = (float) Vec3Layouts.Z.get(vecOut, 0L);
             IO.println(nx + ", " + ny + ", " + nz);
 
             assert nx == vecR.x();
@@ -112,9 +111,9 @@ public final class Vec3Test {
         try (Arena arena = Arena.ofConfined()) {
             int count = 3;
 
-            MemorySegment segA = arena.allocate(Vec3Layouts.VEC3, 3);
-            MemorySegment segB = arena.allocate(Vec3Layouts.VEC3, 3);
-            MemorySegment segR = arena.allocate(Vec3Layouts.VEC3, 3);
+            MemorySegment segA = arena.allocate(Vec3Layouts.VEC3, count);
+            MemorySegment segB = arena.allocate(Vec3Layouts.VEC3, count);
+            MemorySegment segR = arena.allocate(Vec3Layouts.VEC3, count);
 
             long stride = Vec3Layouts.VEC3.byteSize();
             for (long offset = 0L; offset < count; offset++) {

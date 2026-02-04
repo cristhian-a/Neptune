@@ -20,4 +20,6 @@ void vec3_add_all(
     int count
 );
 
+void vec3_add_inplace(Vec3* a, const Vec3* b, int count);
+
 #endif

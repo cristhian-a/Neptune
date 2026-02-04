@@ -37,3 +37,17 @@ void vec3_add_inplace(Vec3* a, const Vec3* b, int count) {
         a[i].z += b[i].z;
     }
 }
+
+// Structure of arrays functions
+
+void vec3_table_add_inplace(
+    float* ax, float* ay, float* az,
+    float* bx, float* by, float* bz,
+    int count
+) {
+    for(int i = 0; i < count; i++) {
+        ax[i] += bx[i];
+        ay[i] += by[i];
+        az[i] += bz[i];
+    }
+}

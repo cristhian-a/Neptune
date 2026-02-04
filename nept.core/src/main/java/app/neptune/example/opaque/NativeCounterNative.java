@@ -6,8 +6,13 @@ import java.lang.invoke.MethodHandle;
 import static java.lang.foreign.ValueLayout.*;
 
 final class NativeCounterNative {
+
     private static final Linker LINKER = Linker.nativeLinker();
-    private static final SymbolLookup LOOKUP =  SymbolLookup.libraryLookup("C:\\Users\\User\\IdeaProjects\\neptune\\native\\build\\nept_count.dll", Arena.global());
+    private static final SymbolLookup LOOKUP =
+            SymbolLookup.libraryLookup(
+                    "C:\\Users\\User\\IdeaProjects\\neptune\\native\\build\\nept_count.dll",
+                    Arena.global()
+            );
 
     private static final MethodHandle CREATE;
     private static final MethodHandle DESTROY;
@@ -37,33 +42,33 @@ final class NativeCounterNative {
         }
     }
 
-    static long create(int initial) {
+    static MemorySegment create(int initial) {
         try {
-            return ((MemorySegment) CREATE.invokeExact(initial)).address();
+            return (MemorySegment) CREATE.invokeExact(initial);
         } catch (Throwable e) {
             throw new RuntimeException(e);
         }
     }
 
-    static void destroy(long handle) {
+    static void destroy(MemorySegment handle) {
         try {
-            DESTROY.invokeExact(MemorySegment.ofAddress(handle));
+            DESTROY.invokeExact(handle);
         } catch (Throwable e) {
             throw new RuntimeException(e);
         }
     }
 
-    static int get(long handle) {
+    static int get(MemorySegment handle) {
         try {
-            return (int) GET.invokeExact(MemorySegment.ofAddress(handle));
+            return (int) GET.invokeExact(handle);
         } catch (Throwable e) {
             throw new RuntimeException(e);
         }
     }
 
-    static void increment(long handle) {
+    static void increment(MemorySegment handle) {
         try {
-            INCREMENT.invokeExact(MemorySegment.ofAddress(handle));
+            INCREMENT.invokeExact(handle);
         } catch (Throwable e) {
             throw new RuntimeException(e);
         }

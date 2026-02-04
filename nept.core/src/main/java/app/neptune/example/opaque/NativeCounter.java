@@ -1,16 +1,18 @@
 package app.neptune.example.opaque;
 
+import java.lang.foreign.MemorySegment;
+
 public final class NativeCounter implements AutoCloseable {
-    private final long handle;
+    private final MemorySegment handle;
     private boolean closed;
 
-    private NativeCounter(long handle) {
+    private NativeCounter(MemorySegment handle) {
         this.handle = handle;
     }
 
     public static NativeCounter create(int initialValue) {
-        long h = NativeCounterNative.create(initialValue);
-        if (h == 0) throw new OutOfMemoryError();
+        MemorySegment h = NativeCounterNative.create(initialValue);
+        if (h == MemorySegment.NULL) throw new OutOfMemoryError();
         return new NativeCounter(h);
     }
 
@@ -25,7 +27,7 @@ public final class NativeCounter implements AutoCloseable {
     }
 
     @Override
-    public void close() throws Exception {
+    public void close() {
         if (!closed) {
             NativeCounterNative.destroy(handle);
             closed = true;
